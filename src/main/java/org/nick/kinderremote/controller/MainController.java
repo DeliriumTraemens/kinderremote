@@ -1,6 +1,7 @@
 package org.nick.kinderremote.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.dto.InputData;
 import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.service.MainService;
@@ -19,9 +20,14 @@ public class MainController {
 //    }
 
     @GetMapping
-    public String getData(@RequestParam("type")String type, @RequestParam(required=false, name="id")Long id ) throws JsonProcessingException {
-        return ms.getResponce(type);
+    public String mainEndPoint(HtRequest request) throws JsonProcessingException {
+        return ms.dispatcher(request);
     }
+
+//    @GetMapping
+//    public String getData(@RequestParam("type")String type, @RequestParam(required=false, name="id")Long id ) throws JsonProcessingException {
+//        return ms.getResponce(type);
+//    }
 
     @GetMapping("/d2")
     public String getData2(InputData data){

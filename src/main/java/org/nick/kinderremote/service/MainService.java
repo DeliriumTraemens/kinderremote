@@ -2,6 +2,7 @@ package org.nick.kinderremote.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.util.ActionRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +74,16 @@ public class MainService {
 
     public Catalog catalog() {
         return catServ.catalog();
+    }
+
+    public String dispatcher(HtRequest request) throws JsonProcessingException {
+//        ObjectMapper mapper = new ObjectMapper();
+        /**
+         * Получить класс, метод
+         * Инвок с аргументами
+         * Сформировать и вернуть строковый Джейсонированный Респонс
+         * */
+
+        return new ObjectMapper().writeValueAsString(request);
     }
 }

@@ -9,4 +9,6 @@ public class HtRequest {
     private Long сatId;
     private Long prodId;
     private Long manId;
+    private int requestedPage;
+    private int totalPages;
 }
