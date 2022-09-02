@@ -1,7 +1,6 @@
 package org.nick.kinderremote.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.InputData;
 import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.service.MainService;
@@ -24,17 +23,23 @@ public class MainController {
         return ms.getResponce(type);
     }
 
+    @GetMapping("/d2")
+    public String getData2(InputData data){
+        return data.toString();
+    }
+
+
     @PostMapping("/data")
     public String resultData(InputData data){
         return data.toString();
     }
 
-    @PostMapping("/data2")
-    public String resultData2(@RequestParam("id")String id, @RequestParam("header") String header) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String result = mapper.writeValueAsString(new InputData(id, header));
-        return result;
-    }
+//    @PostMapping("/data2")
+//    public String resultData2(@RequestParam("id")String id, @RequestParam("header") String header) throws JsonProcessingException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        String result = mapper.writeValueAsString(new InputData(id,header,status,));
+//        return result;
+//    }
 
     @GetMapping("/cat")
     public Catalog catalog(){

@@ -28,7 +28,7 @@ public class CategoryService {
         ObjectMapper mapper = new ObjectMapper();
         List<CatIdNameViev> catalog = catalogRepo.buildCatalogView();
 
-        String sCatalog= null;
+        String sCatalog = null;
         try {
             sCatalog = mapper.writeValueAsString(catalog);
         } catch (JsonProcessingException e) {
@@ -43,7 +43,6 @@ public class CategoryService {
     }
 
 
-
     @SneakyThrows
     public String getCatalog2() {
         ObjectMapper mapper = new ObjectMapper();
@@ -51,16 +50,17 @@ public class CategoryService {
         String result = mapper.writeValueAsString(catalog2);
         return result;
     }
+
     @SneakyThrows
     public String getRazvitie() {
         ObjectMapper mapper = new ObjectMapper();
 
-        CatalogProjIf razvitie=  catRepo.findProjById(1151L);
-        return  mapper.writeValueAsString(razvitie);
+        CatalogProjIf razvitie = catRepo.findProjById(1151L);
+        return mapper.writeValueAsString(razvitie);
     }
 
     @SneakyThrows
-    public String categoryById(Long id){
+    public String categoryById(Long id) {
         CatalogProjIf catById = catRepo.findcatbyid(id);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(catById);
