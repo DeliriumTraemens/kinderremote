@@ -19,6 +19,7 @@ public class MainService {
     private final CategoryService catServ;
     ObjectMapper objectMaper;
 
+
     ActionRegistry<Function>registry=new ActionRegistry<>();
 
     @Autowired
@@ -76,6 +77,10 @@ public class MainService {
         return catServ.catalog();
     }
 
+
+
+
+    
     public String dispatcher(HtRequest request) throws JsonProcessingException {
 //        ObjectMapper mapper = new ObjectMapper();
         /**

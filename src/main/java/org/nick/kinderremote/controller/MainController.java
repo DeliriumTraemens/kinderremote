@@ -5,6 +5,7 @@ import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.dto.InputData;
 import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.service.MainService;
+import org.nick.kinderremote.util.state.StartState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class MainController {
 
     @GetMapping
     public String mainEndPoint(HtRequest request) throws JsonProcessingException {
-        return ms.dispatcher(request);
+        return ms.dispatcher(request)+ StartState.staticList.toString();
     }
 
 //    @GetMapping
