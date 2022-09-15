@@ -6,7 +6,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The main class finder method
+ * */
 @Component
 public class PackageClassScanner {
     private static final String SCANNED_PAKAGE = "src.main.java.org.nick.kinderremote.service";

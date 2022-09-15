@@ -11,7 +11,7 @@ import java.util.List;
 public interface CategoryRepository extends CrudRepository<Category, Long> {
 
     //    @EntityGraph(attributePaths={"parent"})
-    @Query("Select  c.name   from Category c  where c.id=1140")
+    @Query("Select  c.name   from Category c  where c.id=30")
     List<CatalogProjIf> getCatalog();
 
 //    Optional<CatIdNameViev> findById(Long id);
