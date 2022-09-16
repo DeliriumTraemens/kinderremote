@@ -20,7 +20,7 @@ public class CatService implements RepoService {
 
     @Override
     public String getAll(HtRequest request) {
-        return null;
+        return "org.nick.kinderremote.service.CatService.getAll Method";
     }
 
     @Override

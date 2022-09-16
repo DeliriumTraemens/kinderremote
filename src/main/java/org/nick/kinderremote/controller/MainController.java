@@ -5,15 +5,20 @@ import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.dto.InputData;
 import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.service.MainService;
-import org.nick.kinderremote.util.state.StartState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/")
 public class MainController {
-@Autowired
+    private final Logger logger = LoggerFactory.getLogger(MainController.class);
+
+    @Autowired
     MainService ms;
 //    @Autowired
 //    public MainController(MainService ms) {
@@ -21,8 +26,9 @@ public class MainController {
 //    }
 
     @GetMapping
-    public String mainEndPoint(HtRequest request) throws JsonProcessingException {
-        return ms.dispatcher(request)+ StartState.staticList.toString();
+    public String mainEndPoint(HtRequest request) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        logger.info("mainEndPoint Requested");
+        return ms.dispatcher(request);
     }
 
 //    @GetMapping
@@ -32,6 +38,7 @@ public class MainController {
 
     @GetMapping("/d2")
     public String getData2(InputData data){
+        logger.info("org.nick.kinderremote.controller.MainController.getData2 requested");
         return data.toString();
     }
 

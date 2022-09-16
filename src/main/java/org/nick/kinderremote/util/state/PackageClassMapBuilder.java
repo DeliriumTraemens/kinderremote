@@ -31,10 +31,11 @@ public class PackageClassMapBuilder {
         List<Class<?>> classes = packageScanner.find(SCANNED_PAKAGE);
 
         for (Class<?> aClass : classes) {
-            String name = aClass.getName().replace("SCANNED_PAKAGE"+".", "");
+            String name = aClass.getName().replace(SCANNED_PAKAGE+".", "");
 //            String name = aClass.getName().replace("org.nick.kinderremote.service.", "");
+            System.out.println("Map name=================>> " + name);
             String name2=name.replace("Service","Serv");
-            serviceClassNameMap.put(name2, aClass);
+            serviceClassNameMap.put(name, aClass);
         }
 
         System.out.println("----=========---------");
