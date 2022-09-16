@@ -25,7 +25,7 @@ public class CatService implements RepoService {
 
     @Override
     public String getById(HtRequest request) {
-        return "Youuuu! The Id will be replaced";
+        return "Youuuu! The CatId "+request.getСatId()+" will be replaced";
     }
 
     @Override
