@@ -15,7 +15,7 @@ public class PackageClassMapBuilder {
     @Autowired
     private PackageClassScanner packageScanner;
         public static Map<String, Class<?>> serviceClassNameMap =new HashMap<>();
-        public static Map<String, Class<?>> serviceMethodNameMap =new HashMap<>();
+//        public static Map<String, Class<?>> serviceMethodNameMap =new HashMap<>();
 
     @Bean
     public List<Class<?>> classList(){

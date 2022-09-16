@@ -20,17 +20,17 @@ public class CatService implements RepoService {
 
     @Override
     public String getAll(HtRequest request) {
-        return "org.nick.kinderremote.service.CatService.getAll Method";
+        return "Got!!! org.nick.kinderremote.service.CatService.getAll Method received Fuck!!!";
     }
 
     @Override
     public String getById(HtRequest request) {
-        return null;
+        return "Youuuu! The Id will be replaced";
     }
 
     @Override
     public String editHierarchy(HtRequest request) {
-        return null;
+        return "The Hierarchy will be replaced!!!";
     }
 
     @Override
