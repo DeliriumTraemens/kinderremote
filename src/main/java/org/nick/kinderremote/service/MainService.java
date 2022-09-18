@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.util.ActionRegistry;
-import org.nick.kinderremote.util.state.PackageClassMapBuilder;
+import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.AnnotatedType;
@@ -15,21 +16,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static org.nick.kinderremote.util.state.PackageClassMapBuilder.serviceClassNameMap;
+
 @Service
 public class MainService {
 
     Map<String, Method> methods = new HashMap();
-
+    Map<String, ServiceAbstract> services = new HashMap<>();
     ObjectMapper objectMaper;
 
     private final CatService catService;
+    private final ProdService prodService;
 
     ActionRegistry<Function> registry = new ActionRegistry<>();
 
     @Autowired
-    public MainService(CatService catService) {
+    private ApplicationContext context;
+
+    @Autowired
+    public MainService(CatService catService, ProdService prodService) {
 
         this.catService = catService;
+        this.prodService = prodService;
+        this.services.put("catService", catService);
+        this.services.put("prodService", prodService);
     }
 
 
@@ -41,8 +51,11 @@ public class MainService {
          * Инвок с аргументами
          * Сформировать и вернуть строковый Джейсонированный Респонс
          * */
-        Class<?> servClassName = PackageClassMapBuilder.serviceClassNameMap.get(request.getServiceName());
+        Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
+        System.out.println("====== servClassName ======");
+        System.out.println(servClassName);
         Method[] declaredMethods = servClassName.getDeclaredMethods();
+        System.out.println("==== servClassName Methods=====");
         for (Method declaredMethod : declaredMethods) {
             System.out.println(declaredMethod.toString());
             methods.put(declaredMethod.getName()
@@ -67,9 +80,22 @@ public class MainService {
 //        Построить мапку для сопоставления метода с длинным именем с коротким именем запроса
 //        Или дописать в запросе метода недостающую часть имени
         Method requestedMethod = methods.get(request.getMethodName());
-        Object invoke = requestedMethod.invoke(catService, request);
+        System.out.println("========= requestedMethod =========");
+        System.out.println(requestedMethod);
+
+
+        Object bean = context.getBean(servClassName);
+        Object invoke2 = requestedMethod.invoke(bean, request);
+        System.out.println("======>bean<========");
+        System.out.println(bean);
+
+        Object invoke = requestedMethod.invoke(bean, request);
         System.out.println("--->>><<<----");
         System.out.println(invoke.toString());
+
+        System.out.println("----> Services <------");
+        services.entrySet().forEach(System.out::println);
         return new ObjectMapper().writeValueAsString(invoke);
+//        return new ObjectMapper().writeValueAsString(servClassName.toString());
     }
 }

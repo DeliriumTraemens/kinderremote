@@ -1,37 +1,26 @@
 package org.nick.kinderremote.service;
 
 import org.nick.kinderremote.data.dto.HtRequest;
-import org.nick.kinderremote.repository.CatalogRepo;
 import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.nick.kinderremote.util.repoServiceUtil.RepoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CatService extends ServiceAbstract implements RepoService {
-
-    private final CatalogRepo catRepo;
-
-    @Autowired
-    public CatService(CatalogRepo catRepo) {
-        this.catRepo = catRepo;
-    }
-
-
+public class ProdService extends ServiceAbstract implements RepoService {
 
     @Override
     public String getAll(HtRequest request) {
-        return "Got!!! org.nick.kinderremote.service.CatService.getAll Method received Fuck!!!";
+        return "It's a ProdReposervice";
     }
 
     @Override
     public String getById(HtRequest request) {
-        return "Youuuu! The CatId "+request.getСatId()+" will be replaced";
+        return "Prod Service By Id";
     }
 
     @Override
     public String editHierarchy(HtRequest request) {
-        return "The Hierarchy will be replaced!!!";
+        return null;
     }
 
     @Override
