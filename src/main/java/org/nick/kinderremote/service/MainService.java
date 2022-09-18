@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -52,30 +51,25 @@ public class MainService {
          * Сформировать и вернуть строковый Джейсонированный Респонс
          * */
         Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
-        System.out.println("====== servClassName ======");
-        System.out.println(servClassName);
+
+//        Method meth = servClassName.getDeclaredMethod("getById");
+//        System.out.println("Meth " + meth);
+
         Method[] declaredMethods = servClassName.getDeclaredMethods();
-        System.out.println("==== servClassName Methods=====");
+
+        System.out.println("==== servClassName Method s=====");
+
         for (Method declaredMethod : declaredMethods) {
+            System.out.println("-------");
             System.out.println(declaredMethod.toString());
+            System.out.println("Name "+declaredMethod.getName());
             methods.put(declaredMethod.getName()
-                    .replace("java.lang.String org.nick.kinderremote.service.CatService.",""),declaredMethod);
+//                    .replace("java.lang.String org.nick.kinderremote.service.CatService.","")
+                    , declaredMethod);
         }
+        System.out.println("---- Methods ----");
+        methods.entrySet().forEach(System.out::println);
 
-        for (Map.Entry<String, Method> stringMethodEntry : methods.entrySet()) {
-            Method value = stringMethodEntry.getValue();
-            value.getName();
-            String stringValue = value.toString();
-            AnnotatedType annotatedReturnType = value.getAnnotatedReturnType();
-            System.out.println("----<<>>---");
-            System.out.println("Name -> "+value.getName());
-            System.out.println("StringValue -> "+stringValue);
-            System.out.println("AnnotationType -> "+annotatedReturnType);
-        }
-
-
-//        System.out.println("==============<<<Methods map>>>=============");
-//        methods.entrySet().forEach(System.out::println);
 
 //        Построить мапку для сопоставления метода с длинным именем с коротким именем запроса
 //        Или дописать в запросе метода недостающую часть имени
@@ -85,17 +79,13 @@ public class MainService {
 
 
         Object bean = context.getBean(servClassName);
-        Object invoke2 = requestedMethod.invoke(bean, request);
-        System.out.println("======>bean<========");
-        System.out.println(bean);
 
         Object invoke = requestedMethod.invoke(bean, request);
-        System.out.println("--->>><<<----");
+        System.out.println("--->>> invoke.toString() <<<----");
         System.out.println(invoke.toString());
 
-        System.out.println("----> Services <------");
-        services.entrySet().forEach(System.out::println);
+//        System.out.println("----> Services <------");
+//        services.entrySet().forEach(System.out::println);
         return new ObjectMapper().writeValueAsString(invoke);
-//        return new ObjectMapper().writeValueAsString(servClassName.toString());
     }
 }
