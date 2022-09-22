@@ -20,7 +20,7 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
     @Override
     public String editHierarchy(HtRequest request) {
-        return null;
+        return "Return Product Hierarchy";
     }
 
     @Override

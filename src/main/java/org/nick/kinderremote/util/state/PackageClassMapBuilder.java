@@ -19,9 +19,9 @@ public class PackageClassMapBuilder {
 
     @Bean
     public List<Class<?>> classList(){
-        System.out.println("==================+++++================");
-        System.out.println("==================+++++================");
-        packageScanner.find(SCANNED_PAKAGE).forEach(System.out::println);
+//        System.out.println("==================+++++================");
+//        System.out.println("==================+++++================");
+//        packageScanner.find(SCANNED_PAKAGE).forEach(System.out::println);
         return packageScanner.find(SCANNED_PAKAGE);
     }
 
@@ -32,13 +32,12 @@ public class PackageClassMapBuilder {
 
         for (Class<?> aClass : classes) {
             String name = aClass.getName().replace(SCANNED_PAKAGE+".", "");
-//            String name = aClass.getName().replace("org.nick.kinderremote.service.", "");
             System.out.println("Map name=================>> " + name);
-            String name2=name.replace("Service","Serv");
+//            String name2=name.replace("Service","Serv");
             serviceClassNameMap.put(name, aClass);
         }
 
-        System.out.println("----=========---------");
+        System.out.println("----==== serviceClassNameMap.entrySet() =====---------");
         serviceClassNameMap.entrySet().forEach(System.out::println);
 
         // Далее создаем мапку методов для каждого класса из serviceClassNameMap

@@ -20,6 +20,8 @@ public class PackageClassScanner {
 
     public static List< Class<?> > find(String scannedPackage) {
         String scannedPath = scannedPackage.replace(PKG_SEPARATOR, DIR_SEPARATOR);
+        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+
         URL scannedUrl = Thread.currentThread().getContextClassLoader().getResource(scannedPath);
         if (scannedUrl == null) {
             throw new IllegalArgumentException(String.format(BAD_PACKAGE_ERROR, scannedPath, scannedPackage));

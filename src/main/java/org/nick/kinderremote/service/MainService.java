@@ -3,7 +3,6 @@ package org.nick.kinderremote.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.HtRequest;
-import org.nick.kinderremote.util.ActionRegistry;
 import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static org.nick.kinderremote.util.state.PackageClassMapBuilder.serviceClassNameMap;
 
@@ -27,29 +25,28 @@ public class MainService {
     private final CatService catService;
     private final ProdService prodService;
 
-    ActionRegistry<Function> registry = new ActionRegistry<>();
+//    ActionRegistry<Function> registry = new ActionRegistry<>();
+
+    private final ApplicationContext context;
 
     @Autowired
-    private ApplicationContext context;
-
-    @Autowired
-    public MainService(CatService catService, ProdService prodService) {
+    public MainService(CatService catService, ProdService prodService, ApplicationContext context) {
 
         this.catService = catService;
         this.prodService = prodService;
         this.services.put("catService", catService);
         this.services.put("prodService", prodService);
+        this.context = context;
     }
 
 
 
-    public String dispatcher(HtRequest request) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-//        ObjectMapper mapper = new ObjectMapper();
         /**
          * Получить класс, метод
          * Инвок с аргументами
          * Сформировать и вернуть строковый Джейсонированный Респонс
-         * */
+         */
+    public String dispatcher(HtRequest request) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
 
 //        Method meth = servClassName.getDeclaredMethod("getById");
@@ -57,15 +54,19 @@ public class MainService {
 
         Method[] declaredMethods = servClassName.getDeclaredMethods();
 
-        System.out.println("==== servClassName Method s=====");
+        System.out.println("Methods Array iteration - getName");
+        for (Method declaredMethod : declaredMethods) {
+            System.out.println(declaredMethod.getName());
+        }
+
+
+        System.out.println("==== servClassName Methods =====");
 
         for (Method declaredMethod : declaredMethods) {
             System.out.println("-------");
             System.out.println(declaredMethod.toString());
             System.out.println("Name "+declaredMethod.getName());
-            methods.put(declaredMethod.getName()
-//                    .replace("java.lang.String org.nick.kinderremote.service.CatService.","")
-                    , declaredMethod);
+            methods.put(declaredMethod.getName(), declaredMethod);
         }
         System.out.println("---- Methods ----");
         methods.entrySet().forEach(System.out::println);
