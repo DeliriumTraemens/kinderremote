@@ -22,20 +22,20 @@ public class MainService {
     Map<String, ServiceAbstract> services = new HashMap<>();
     ObjectMapper objectMaper;
 
-    private final CatService catService;
-    private final ProdService prodService;
+//    private final CatService catService;
+//    private final ProdService prodService;
 
 //    ActionRegistry<Function> registry = new ActionRegistry<>();
 
     private final ApplicationContext context;
 
     @Autowired
-    public MainService(CatService catService, ProdService prodService, ApplicationContext context) {
+    public MainService(ApplicationContext context) {
 
-        this.catService = catService;
-        this.prodService = prodService;
-        this.services.put("catService", catService);
-        this.services.put("prodService", prodService);
+//        this.catService = catService;
+//        this.prodService = prodService;
+//        this.services.put("catService", catService);
+//        this.services.put("prodService", prodService);
         this.context = context;
     }
 
