@@ -3,7 +3,6 @@ package org.nick.kinderremote.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.HtRequest;
-import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -18,24 +17,19 @@ import static org.nick.kinderremote.util.state.PackageClassMapBuilder.serviceCla
 @Service
 public class MainService {
 
-    Map<String, Method> methods = new HashMap();
-    Map<String, ServiceAbstract> services = new HashMap<>();
+    Map<String, Method> methodsMap = new HashMap();
+//    Map<String, ServiceAbstract> services = new HashMap<>();
     ObjectMapper objectMaper;
 
-    private final CatService catService;
-    private final ProdService prodService;
+//    private final CatService catService;
+//    private final ProdService prodService;
 
 //    ActionRegistry<Function> registry = new ActionRegistry<>();
 
     private final ApplicationContext context;
 
     @Autowired
-    public MainService(CatService catService, ProdService prodService, ApplicationContext context) {
-
-        this.catService = catService;
-        this.prodService = prodService;
-        this.services.put("catService", catService);
-        this.services.put("prodService", prodService);
+    public MainService(ApplicationContext context) {
         this.context = context;
     }
 
@@ -54,10 +48,10 @@ public class MainService {
         Method[] declaredMethods = servClassName.getDeclaredMethods();
 
         for (Method declaredMethod : declaredMethods) {
-            methods.put(declaredMethod.getName(), declaredMethod);
+            methodsMap.put(declaredMethod.getName(), declaredMethod);
         }
 
-        Method requestedMethod = methods.get(request.getMethodName());
+        Method requestedMethod = methodsMap.get(request.getMethodName());
 
 
         Object invoke = requestedMethod.invoke(bean, request);
