@@ -58,14 +58,9 @@ public class MainService {
         }
 
         Method requestedMethod = methods.get(request.getMethodName());
-        System.out.println("========= requestedMethod =========");
-        System.out.println(requestedMethod.getName());
 
 
         Object invoke = requestedMethod.invoke(bean, request);
-        System.out.println("--->>> invoke.toString() <<<----");
-        System.out.println(invoke.toString());
-
-        return new ObjectMapper().writeValueAsString(invoke);
+        return (String) invoke;
     }
 }
