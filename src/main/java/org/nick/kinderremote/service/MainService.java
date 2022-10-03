@@ -49,44 +49,23 @@ public class MainService {
     public String dispatcher(HtRequest request) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
 
-//        Method meth = servClassName.getDeclaredMethod("getById");
-//        System.out.println("Meth " + meth);
+        Object bean = context.getBean(servClassName);
 
         Method[] declaredMethods = servClassName.getDeclaredMethods();
 
-        System.out.println("Methods Array iteration - getName");
         for (Method declaredMethod : declaredMethods) {
-            System.out.println(declaredMethod.getName());
-        }
-
-
-        System.out.println("==== servClassName Methods =====");
-
-        for (Method declaredMethod : declaredMethods) {
-            System.out.println("-------");
-            System.out.println(declaredMethod.toString());
-            System.out.println("Name "+declaredMethod.getName());
             methods.put(declaredMethod.getName(), declaredMethod);
         }
-        System.out.println("---- Methods ----");
-        methods.entrySet().forEach(System.out::println);
 
-
-//        Построить мапку для сопоставления метода с длинным именем с коротким именем запроса
-//        Или дописать в запросе метода недостающую часть имени
         Method requestedMethod = methods.get(request.getMethodName());
         System.out.println("========= requestedMethod =========");
-        System.out.println(requestedMethod);
+        System.out.println(requestedMethod.getName());
 
-
-        Object bean = context.getBean(servClassName);
 
         Object invoke = requestedMethod.invoke(bean, request);
         System.out.println("--->>> invoke.toString() <<<----");
         System.out.println(invoke.toString());
 
-//        System.out.println("----> Services <------");
-//        services.entrySet().forEach(System.out::println);
         return new ObjectMapper().writeValueAsString(invoke);
     }
 }
