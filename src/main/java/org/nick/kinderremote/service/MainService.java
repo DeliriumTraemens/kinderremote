@@ -53,8 +53,10 @@ public class MainService {
 
         Method requestedMethod = methodsMap.get(request.getMethodName());
 
-
         Object invoke = requestedMethod.invoke(bean, request);
-        return (String) invoke;
+        return invoke.toString();
     }
+
+
+
 }

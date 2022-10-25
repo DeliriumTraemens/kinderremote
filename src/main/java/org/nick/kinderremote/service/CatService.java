@@ -7,9 +7,13 @@ import org.nick.kinderremote.data.entity.Catalog;
 import org.nick.kinderremote.repository.CatalogRepo;
 import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.nick.kinderremote.util.repoServiceUtil.RepoService;
+import org.nick.kinderremote.util.state.CatalogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Optional;
 
 @Service
@@ -17,6 +21,8 @@ public class CatService extends ServiceAbstract implements RepoService {
 
     private final CatalogRepo catRepo;
     ObjectMapper objectMapper;
+    @Autowired
+    CatalogUtil cu;
 
     @Autowired
     public CatService(CatalogRepo catRepo) {
@@ -25,9 +31,24 @@ public class CatService extends ServiceAbstract implements RepoService {
 
 
 
+    public String initialData(HtRequest request) throws IOException {
+        ObjectInputStream catalogObjectInputStream = cu.getCatalogObjectInputStream();
+//        getInitialProductsList()
+        return "";
+    }
+
+
+    @Cacheable("catalog")
     @Override
-    public String getAll(HtRequest request) {
-        return "Got!!! org.nick.kinderremote.service.CatService.getAll Method received Fuck!!!";
+    public String getAll(HtRequest request) throws IOException, ClassNotFoundException {
+//        CategoryList
+//        ProdList - may be "random"
+
+
+        ObjectInputStream ois = cu.getCatalogObjectInputStream();
+
+        return (String) ois.readObject();
+
     }
 
     @Override
