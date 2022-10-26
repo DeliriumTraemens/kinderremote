@@ -45,6 +45,7 @@ public class MainService {
 
         Object bean = context.getBean(servClassName);
 
+        System.out.println("BEAN IS "+bean.toString());
         Method[] declaredMethods = servClassName.getDeclaredMethods();
 
         for (Method declaredMethod : declaredMethods) {
@@ -55,6 +56,18 @@ public class MainService {
 
         Object invoke = requestedMethod.invoke(bean, request);
         return invoke.toString();
+    }
+    public String dispatcher2(HtRequest request) throws InvocationTargetException, IllegalAccessException {
+        Class<?> classBean = (Class<?>) context.getBean(request.getServiceName());
+//        classBean.getName()
+        Map<String, Method> beanMethodsMap = new HashMap();
+        Method[] declaredMethods = classBean.getDeclaredMethods();
+        for(Method declaredMethod: declaredMethods){
+            beanMethodsMap.put(declaredMethod.getName(), declaredMethod);
+        }
+        Method requestedMethod = beanMethodsMap.get(request.getMethodName());
+        String response = requestedMethod.invoke(classBean, request).toString();
+        return response;
     }
 
 

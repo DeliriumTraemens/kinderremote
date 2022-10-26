@@ -40,12 +40,12 @@ public class UtilityService {
         return "createInitialProductIdSet is performed";
     }
 
-    public String createIdSetForSearch(HtRequest request) throws IOException, ClassNotFoundException {
+    public String createRandomizedProductSet(HtRequest request) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("ProductTotalId.bin");
         ObjectInputStream ois = new ObjectInputStream(fis);
 
         List<Long> totalProductsIdList = new ArrayList((Set<Long>) ois.readObject());
-
+        ois.close();
         ArrayList<Integer> idInts = new ArrayList<>();
 
         //        безымянный объект Рандома, генерящий (в данном случае Интовый) поток цыфр (мощность потока, стартовое знч, максимальное), через форИч пихуемый в ранеесозданный Лист
@@ -58,7 +58,7 @@ public class UtilityService {
                 productsIdSearchList.add(totalProductsIdList.get(idInt));
                 System.out.println("idNumber in List " + idInt + " corresponding Product Id " + totalProductsIdList.get(idInt));
             }
-
+        //TODO вместо findAll поштучно извлечь кастомной кверью
         List<Product> allProductsById = prodRepo.findAllById(productsIdSearchList);
         ObjectMapper mapper = new ObjectMapper();
             mapper.findAndRegisterModules(); //Нужно для обработки даты создания...
