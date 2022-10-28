@@ -2,7 +2,7 @@ package org.nick.kinderremote.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.HtRequest;
-import org.nick.kinderremote.data.entity.Product;
+import org.nick.kinderremote.data.projections.ProdCardProjIf;
 import org.nick.kinderremote.repository.ManufacturerRepository;
 import org.nick.kinderremote.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,12 @@ public class UtilityService {
                 System.out.println("idNumber in List " + idInt + " corresponding Product Id " + totalProductsIdList.get(idInt));
             }
         //TODO вместо findAll поштучно извлечь кастомной кверью
-        List<Product> allProductsById = prodRepo.findAllById(productsIdSearchList);
+
+        Set<ProdCardProjIf> allProductsById = prodRepo.findRandomProductSet(productsIdSearchList);
+        Set<ProdCardProjIf> allProductsById2 = prodRepo.findRandomProduct();
+
+//        List<Product> allProductsById = prodRepo.findAll();
+//        List<Product> allProductsById = prodRepo.findAllById(productsIdSearchList);
         ObjectMapper mapper = new ObjectMapper();
             mapper.findAndRegisterModules(); //Нужно для обработки даты создания...
 

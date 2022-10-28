@@ -3,6 +3,7 @@ package org.nick.kinderremote.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.nick.kinderremote.data.dto.HtRequest;
+import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
 import org.nick.kinderremote.repository.ProductRepository;
 import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
@@ -57,10 +58,8 @@ public class ProdService extends ServiceAbstract implements RepoService {
     }
 
     // TEST
-    public String getInitialProductsWithManufacturers(HtRequest request) throws JsonProcessingException {
-        Set<Object> initProdWithManufacturer = prodRepo.getInitialProductListWithManufacturer();
-
-
+    public String getInitialProducts(HtRequest request) throws JsonProcessingException {
+        Set<ProdCardManIf> initProdWithManufacturer = prodRepo.getInitialProductListWithManufacturer();
 
         return new ObjectMapper().writeValueAsString(initProdWithManufacturer);
 //        return "new ObjectMapper().writeValueAsString(initProdWithManufacturer)";

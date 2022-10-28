@@ -1,6 +1,7 @@
 package org.nick.kinderremote.repository;
 
 import org.nick.kinderremote.data.entity.Product;
+import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -26,19 +28,28 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             nativeQuery=true)
     Set<ProdCardProjIf> getInitialProductList();
 
-    @Query(value="SELECT p.product_id as id, p.image, p.price, " +
-            " pd.name," +
-            "manufacturer.manufacturer_id, manufacturer.name AS name_1 " +
-            "FROM oc_product AS p " +
-            "LEFT JOIN oc_product_description AS pd" +
-            " ON p.product_id = pd.product_id " +
-            "LEFT JOIN oc_manufacturer AS manufacturer " +
-            "ON p.manufacturer_id = manufacturer.manufacturer_id" +
-            " ORDER BY RAND()" +
-            " LIMIT 15", nativeQuery=true)
+    @Query(value="SELECT p.product_id as id, p.image as image, p.price as price, " +
+            " pd.name as name," +
+            "m.manufacturer_id as manId, m.name AS manName, m.image AS manImage " +
+            "FROM oc_product p " +
+            "LEFT JOIN oc_product_description pd" +
+            "   ON p.product_id = pd.product_id " +
+            "LEFT JOIN oc_manufacturer m " +
+            "   ON p.manufacturer_id = m.manufacturer_id " +
+            "ORDER BY RAND() " +
+            "LIMIT 15", nativeQuery=true)
 //    @Query(value = "SELECT p.product_id FROM oc_product p  order by RAND()  LIMIT 10  ")
-    Set<Object> getInitialProductListWithManufacturer();
+    Set<ProdCardManIf> getInitialProductListWithManufacturer();
+//    Set<Object[]> getInitialProductListWithManufacturer();
 
-    @Query("SELECT p.id FROM Product p")
+    @Query("SELECT DISTINCT p.id FROM Product p")
     Set<Long> getAllProductId();
+
+    @Query("SELECT DISTINCT p FROM Product p WHERE p.id IN :idList")
+    Set<ProdCardProjIf> findRandomProductSet(@Param("idList")List<Long> idList);
+
+    @Query(value= "SELECT p.id FROM Product p ORDER BY RAND() LIMIT 10", nativeQuery=true)
+    Set<ProdCardProjIf> findRandomProduct();
+
+    //    List<Product> findById(List<Long> productsIdSearchList);
 }
