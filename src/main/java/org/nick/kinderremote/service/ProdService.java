@@ -2,7 +2,11 @@ package org.nick.kinderremote.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.Hibernate;
 import org.nick.kinderremote.data.dto.HtRequest;
+import org.nick.kinderremote.data.dto.ManufacturerCardDto;
+import org.nick.kinderremote.data.dto.ProductByIdWithManufacturerList;
+import org.nick.kinderremote.data.projections.ManProjIf;
 import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
 import org.nick.kinderremote.repository.ProductRepository;
@@ -14,16 +18,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdService extends ServiceAbstract implements RepoService {
+    ObjectMapper mapper;
+
     private final ProductRepository prodRepo;
     @Autowired
     public ProdService(ProductRepository prodRepo) {
         this.prodRepo = prodRepo;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
     }
+
+    ////--METHODS--///
 
     @Override
     public String getAll(HtRequest request) {
@@ -43,10 +55,10 @@ public class ProdService extends ServiceAbstract implements RepoService {
     }
 
     public String getInitialProductsList(HtRequest request) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.findAndRegisterModules();
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.findAndRegisterModules();
         Pageable pageRequest = PageRequest.of(0, 5);
-//        Возможно тут не пейджебл , просто Лимит
+//        Возможно тут не пейджебл , просто Лимит -- ТУТ РАНДОМ -- ПЕЙДЖ НАХ НЕ НУЖЕН
 //        May be first form a categoryList
         Set<ProdCardProjIf> initialProductList=prodRepo.getInitialProductList();
 //        List<Long> collectID = initialProductList.stream().map(t -> t.getId()).sorted().collect(Collectors.toList());
@@ -75,13 +87,42 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
         List<ProdCardProjIf> productContent = productsPaged.getContent();
         ObjectMapper mapper = new ObjectMapper();
-        String response = mapper.writeValueAsString(productsPaged);
-//        String response = mapper.writeValueAsString(productContent);
 
-        System.out.println("==========getProdByCatId=================");
-        System.out.println(productsPaged.getContent());
+        String productList = mapper.writeValueAsString(productsPaged);
+//        String response = mapper.writeValueAsString(productContent);
+        List<ProdCardProjIf> content = productsPaged.getContent();
+        Set<ManProjIf> collectMan = content.stream().distinct().map(p -> p.getManufacturer()).collect(Collectors.toSet());
+        Set<ManufacturerCardDto> manufacturerUnproxedSet = new HashSet<>();
+
+        for (ManProjIf manProjIf : collectMan) {
+            ManProjIf unproxy1 = ( ManProjIf) Hibernate.unproxy(manProjIf);
+
+            ManufacturerCardDto card = new ManufacturerCardDto(unproxy1.getId(), unproxy1.getName(), unproxy1.getImage());
+            manufacturerUnproxedSet.add(card);
+            System.out.println("===== ManufacturerCardDto_Card ====");
+            System.out.println(card);
+        }
+
+        String manufacturerList = mapper.writeValueAsString(manufacturerUnproxedSet);
+            System.out.println("===ManufacturerList===");
+        System.out.println(manufacturerList);
+//            System.out.println(manufacturerUnproxedSet.size());
+//            System.out.println(manufacturerUnproxedSet);
+
+
+//        System.out.println("==========Manufacturers collectMan=================");
+//        System.out.println(collectMan.size());
+//        System.out.println(collectMan);
+        ProductByIdWithManufacturerList responseDto = new ProductByIdWithManufacturerList(productContent, manufacturerUnproxedSet);
+//        String response= mapper.writeValueAsString(new ProductByIdWithManufacturerList(productList,manufacturerList));
+        String response= mapper.writeValueAsString(responseDto);
+
+        //------------Working---------
+        ProductByIdWithManufacturerList transferContainer = new ProductByIdWithManufacturerList(content,manufacturerUnproxedSet);
+        String responseContainer = mapper.writeValueAsString(transferContainer);
 //
-        return response;
+//        return response;
+        return responseContainer;
     }
 
     @Override

@@ -6,4 +6,8 @@ public interface ManProjIf {
     String getImage();
 
 
+
+
+
+
 }

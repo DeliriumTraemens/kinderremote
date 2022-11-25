@@ -1,15 +1,15 @@
 package org.nick.kinderremote.data.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Data
 @ToString(of = {"id", "name"})
-@EqualsAndHashCode(of = {"id", "name"})
+//@EqualsAndHashCode(of = {"id", "name"})
 @Table(name = "oc_manufacturer")
 
 @SecondaryTables({
@@ -28,4 +28,17 @@ public class Manufacturer {
     @Column(name = "image")
     private String image;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Manufacturer)) return false;
+        Manufacturer that = (Manufacturer) o;
+        return getId().equals(that.getId()) &&
+                getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName());
+    }
 }

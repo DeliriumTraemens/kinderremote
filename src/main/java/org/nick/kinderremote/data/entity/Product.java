@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
 @Table(name = "oc_product")
 @ToString(of = {"id", "name", "creationDate","manufacturer"})
-@EqualsAndHashCode(of = {"id","name"})
+//@EqualsAndHashCode(of = {"id","name"})
 
 @SecondaryTables({
         @SecondaryTable(name = "oc_product_description", pkJoinColumns = @PrimaryKeyJoinColumn(name = "product_id")),
@@ -56,7 +56,23 @@ public class Product {
     @JoinColumn(name="manufacturer_id")
     private Manufacturer manufacturer;
 
-//    @Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return getId().equals(product.getId()) &&
+                Objects.equals(getPrice(), product.getPrice()) &&
+                getName().equals(product.getName()) &&
+                Objects.equals(getManufacturer(), product.getManufacturer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPrice(), getName(), getManufacturer());
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "\nProduct{" +
 //                "id=" + id +
