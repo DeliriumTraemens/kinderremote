@@ -80,16 +80,12 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
 
     public String getProdByCatId(HtRequest request) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
         Long catId = request.getСatId();
 
         Pageable pageRequest = PageRequest.of(0, 14);
         Page<ProdCardProjIf> productsPaged = prodRepo.findProductsByCatId(catId, pageRequest);
 
-        List<ProdCardProjIf> productContent = productsPaged.getContent();
-        ObjectMapper mapper = new ObjectMapper();
-
-        String productList = mapper.writeValueAsString(productsPaged);
-//        String response = mapper.writeValueAsString(productContent);
         List<ProdCardProjIf> content = productsPaged.getContent();
         Set<ManProjIf> collectMan = content.stream().distinct().map(p -> p.getManufacturer()).collect(Collectors.toSet());
         Set<ManufacturerCardDto> manufacturerUnproxedSet = new HashSet<>();
@@ -99,29 +95,12 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
             ManufacturerCardDto card = new ManufacturerCardDto(unproxy1.getId(), unproxy1.getName(), unproxy1.getImage());
             manufacturerUnproxedSet.add(card);
-            System.out.println("===== ManufacturerCardDto_Card ====");
-            System.out.println(card);
         }
-
-        String manufacturerList = mapper.writeValueAsString(manufacturerUnproxedSet);
-            System.out.println("===ManufacturerList===");
-        System.out.println(manufacturerList);
-//            System.out.println(manufacturerUnproxedSet.size());
-//            System.out.println(manufacturerUnproxedSet);
-
-
-//        System.out.println("==========Manufacturers collectMan=================");
-//        System.out.println(collectMan.size());
-//        System.out.println(collectMan);
-        ProductByIdWithManufacturerList responseDto = new ProductByIdWithManufacturerList(productContent, manufacturerUnproxedSet);
-//        String response= mapper.writeValueAsString(new ProductByIdWithManufacturerList(productList,manufacturerList));
-        String response= mapper.writeValueAsString(responseDto);
 
         //------------Working---------
         ProductByIdWithManufacturerList transferContainer = new ProductByIdWithManufacturerList(content,manufacturerUnproxedSet);
         String responseContainer = mapper.writeValueAsString(transferContainer);
-//
-//        return response;
+
         return responseContainer;
     }
 
