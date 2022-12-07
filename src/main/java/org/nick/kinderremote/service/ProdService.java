@@ -78,7 +78,7 @@ public class ProdService extends ServiceAbstract implements RepoService {
     }
     // TEST END
 
-
+//Select Products by Click on the Category Browser
     public String getProdByCatId(HtRequest request) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Long catId = request.getСatId();
@@ -88,6 +88,7 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
         List<ProdCardProjIf> content = productsPaged.getContent();
         Set<ManProjIf> collectMan = content.stream().distinct().map(p -> p.getManufacturer()).collect(Collectors.toSet());
+
         Set<ManufacturerCardDto> manufacturerUnproxedSet = new HashSet<>();
 
         for (ManProjIf manProjIf : collectMan) {
@@ -97,11 +98,19 @@ public class ProdService extends ServiceAbstract implements RepoService {
             manufacturerUnproxedSet.add(card);
         }
 
-        //------------Working---------
-        ProductByIdWithManufacturerList transferContainer = new ProductByIdWithManufacturerList(content,manufacturerUnproxedSet);
+                                //------------Working---------
+        ProductByIdWithManufacturerList transferContainer = new ProductByIdWithManufacturerList(content, manufacturerUnproxedSet);
         String responseContainer = mapper.writeValueAsString(transferContainer);
 
         return responseContainer;
+    }
+
+    public String getProdByManId(HtRequest request) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Set<ProdCardManIf> productListByManufacturer = prodRepo.getProductListByManufacturer(request.getManId(), request.getСatId());
+        String productList = mapper.writeValueAsString(productListByManufacturer);
+        return productList;
     }
 
     @Override

@@ -17,6 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.catId = :id")
     Page<ProdCardProjIf> findProductsByCatId(@Param("id") Long catId, Pageable pageRequest);
 
+
+
 //    @Query(value="SELECT * FROM oc_product p ORDER BY RAND() LIMIT 15", nativeQuery=true)
     @Query(value="SELECT p.product_id as id, p.image, p.price, " +
                 " pd.name " +
@@ -41,6 +43,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //    @Query(value = "SELECT p.product_id FROM oc_product p  order by RAND()  LIMIT 10  ")
     Set<ProdCardManIf> getInitialProductListWithManufacturer();
 //    Set<Object[]> getInitialProductListWithManufacturer();
+
+//==Select Products By Manufacturer INSERT JOIN ProductToCategory
+    @Query(value="SELECT p.product_id as id, p.image as image, p.price as price, " +
+            " pd.name as name, " +
+            "m.manufacturer_id as manId, m.name AS manName, m.image AS manImage " +
+            "FROM oc_product p " +
+            "LEFT JOIN oc_product_description pd" +
+            "   ON p.product_id = pd.product_id " +
+            "LEFT JOIN oc_product_to_category pc" +
+            "   ON p.product_id = pc.product_id " +
+            "LEFT JOIN oc_manufacturer m " +
+            "   ON p.manufacturer_id = m.manufacturer_id " +
+            "WHERE p.manufacturer_id = :manId AND pc.category_id = :catId" , nativeQuery=true)
+     Set<ProdCardManIf> getProductListByManufacturer(@Param ("manId")Long manId, @Param("catId")Long catId);
 
     @Query("SELECT DISTINCT p.id FROM Product p")
     Set<Long> getAllProductId();
