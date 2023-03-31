@@ -39,7 +39,9 @@ public class UtilityService {
         oos.close();
         return "createInitialProductIdSet is performed";
     }
-
+/**
+ * Генератор "случайного" списка продуктов на основе произвольно выбранных id -- заменен на SQL random native
+ * */
     public String createRandomizedProductSet(HtRequest request) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("ProductTotalId.bin");
         ObjectInputStream ois = new ObjectInputStream(fis);
@@ -48,7 +50,8 @@ public class UtilityService {
         ois.close();
         ArrayList<Integer> idInts = new ArrayList<>();
 
-        //        безымянный объект Рандома, генерящий (в данном случае Интовый) поток цыфр (мощность потока, стартовое знч, максимальное), через форИч пихуемый в ранеесозданный Лист
+        //        безымянный объект Рандома, генерящий (в данном случае Интовый) поток цыфр (мощность потока, стартовое знч, максимальное),
+        //        через форИч пихуемый в ранеесозданный Лист - поэтому просто new без создания переменной
         new Random().ints(15, 0, (totalProductsIdList.size() -1)).forEach(idInts::add);
 //        new Random().ints(15, 0, (totalProductsIdList.size() -1)).forEach(idInts::add);
 

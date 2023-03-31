@@ -1,5 +1,6 @@
 package org.nick.kinderremote.repository;
 
+import org.nick.kinderremote.data.entity.Manufacturer;
 import org.nick.kinderremote.data.entity.Product;
 import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
@@ -55,7 +56,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "   ON p.product_id = pc.product_id " +
             "LEFT JOIN oc_manufacturer m " +
             "   ON p.manufacturer_id = m.manufacturer_id " +
-            "WHERE p.manufacturer_id = :manId AND pc.category_id = :catId" , nativeQuery=true)
+            "WHERE p.manufacturer_id = :manId AND pc.category_id = :catId" +
+            " LIMIT 10" , nativeQuery=true)
      Set<ProdCardManIf> getProductListByManufacturer(@Param ("manId")Long manId, @Param("catId")Long catId);
 
     @Query("SELECT DISTINCT p.id FROM Product p")
@@ -66,6 +68,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value= "SELECT p.id FROM Product p ORDER BY RAND() LIMIT 10", nativeQuery=true)
     Set<ProdCardProjIf> findRandomProduct();
+
+//    Set<ProdCardManIf> findDistinctByNameContaining(String searchName);
+    Set<Product> findDistinctByNameContaining(String searchName);
+
+    Set<Product> findDistinctByNameContainingAndManufacturerOrderByPriceDesc(String searchName, Manufacturer man);
 
     //    List<Product> findById(List<Long> productsIdSearchList);
 }

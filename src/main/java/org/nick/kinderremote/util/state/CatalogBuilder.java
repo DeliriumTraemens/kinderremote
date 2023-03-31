@@ -4,6 +4,10 @@ import org.nick.kinderremote.repository.CatalogRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Пустышка?
+ * */
+
 @Configuration
 public class CatalogBuilder {
     private final CatalogRepo catRepo;

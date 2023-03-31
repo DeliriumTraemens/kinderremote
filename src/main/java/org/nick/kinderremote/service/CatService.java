@@ -53,7 +53,7 @@ public class CatService extends ServiceAbstract implements RepoService {
 
     @Override
     public String getById(HtRequest request) throws JsonProcessingException {
-        Optional<Catalog> byId = catRepo.findById(request.getСatId());
+        Optional<Catalog> byId = catRepo.findById(request.getCatId());
         Catalog catalog = byId.get();
         return new ObjectMapper().writeValueAsString(catalog);
     }

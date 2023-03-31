@@ -6,7 +6,7 @@ import lombok.Data;
 public class HtRequest {
     private String serviceName;
     private String methodName;
-    private Long сatId;
+    private Long catId;
     private Long prodId;
     private Long manId;
     private String searchName;

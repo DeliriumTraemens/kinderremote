@@ -3,6 +3,9 @@ package org.nick.kinderremote.util.components;
 import org.nick.kinderremote.data.dto.HtRequest;
 import org.springframework.stereotype.Component;
 
+/**
+ * Неубранная пустышка?
+ * */
 @Component
 public class ServiceActor {
 //    blah blah Constructor

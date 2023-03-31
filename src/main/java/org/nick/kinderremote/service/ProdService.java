@@ -6,9 +6,13 @@ import org.hibernate.Hibernate;
 import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.dto.ManufacturerCardDto;
 import org.nick.kinderremote.data.dto.ProductByIdWithManufacturerList;
+import org.nick.kinderremote.data.dto.ProductSearchDto;
+import org.nick.kinderremote.data.entity.Manufacturer;
+import org.nick.kinderremote.data.entity.Product;
 import org.nick.kinderremote.data.projections.ManProjIf;
 import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
+import org.nick.kinderremote.repository.ManufacturerRepository;
 import org.nick.kinderremote.repository.ProductRepository;
 import org.nick.kinderremote.util.abstractInheritance.ServiceAbstract;
 import org.nick.kinderremote.util.repoServiceUtil.RepoService;
@@ -26,10 +30,11 @@ import java.util.stream.Collectors;
 @Service
 public class ProdService extends ServiceAbstract implements RepoService {
     ObjectMapper mapper;
-
+    private final ManufacturerRepository manRepo;
     private final ProductRepository prodRepo;
     @Autowired
-    public ProdService(ProductRepository prodRepo) {
+    public ProdService(ManufacturerRepository manRepo, ProductRepository prodRepo) {
+        this.manRepo = manRepo;
         this.prodRepo = prodRepo;
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
@@ -81,18 +86,19 @@ public class ProdService extends ServiceAbstract implements RepoService {
 //Select Products by Click on the Category Browser
     public String getProdByCatId(HtRequest request) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Long catId = request.getСatId();
-
+        Long catId = request.getCatId();
+        int page;
+        int size;
+        Set<ManufacturerCardDto> manufacturerUnproxedSet = new HashSet<>();
+        //TODO ЗАМЕНИТЬ хардкодед параметры в пейджреквест на варики
         Pageable pageRequest = PageRequest.of(0, 14);
         Page<ProdCardProjIf> productsPaged = prodRepo.findProductsByCatId(catId, pageRequest);
 
         List<ProdCardProjIf> content = productsPaged.getContent();
         Set<ManProjIf> collectMan = content.stream().distinct().map(p -> p.getManufacturer()).collect(Collectors.toSet());
 
-        Set<ManufacturerCardDto> manufacturerUnproxedSet = new HashSet<>();
-
         for (ManProjIf manProjIf : collectMan) {
-            ManProjIf unproxy1 = ( ManProjIf) Hibernate.unproxy(manProjIf);
+             ManProjIf unproxy1 = ( ManProjIf) Hibernate.unproxy(manProjIf);
 
             ManufacturerCardDto card = new ManufacturerCardDto(unproxy1.getId(), unproxy1.getName(), unproxy1.getImage());
             manufacturerUnproxedSet.add(card);
@@ -100,17 +106,56 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
                                 //------------Working---------
         ProductByIdWithManufacturerList transferContainer = new ProductByIdWithManufacturerList(content, manufacturerUnproxedSet);
+
+
         String responseContainer = mapper.writeValueAsString(transferContainer);
 
         return responseContainer;
     }
 
-    public String getProdByManId(HtRequest request) throws JsonProcessingException {
+    public Object getProdByManId(HtRequest request) throws JsonProcessingException {
+
+
         ObjectMapper mapper = new ObjectMapper();
 
-        Set<ProdCardManIf> productListByManufacturer = prodRepo.getProductListByManufacturer(request.getManId(), request.getСatId());
+        Set<ProdCardManIf> productListByManufacturer = prodRepo.getProductListByManufacturer(request.getManId(), request.getCatId());
         String productList = mapper.writeValueAsString(productListByManufacturer);
+
         return productList;
+    }
+
+    public Object searchProductsByName(HtRequest request) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+
+        String searchName;
+        Long catId;
+        Manufacturer manufacturer;
+
+        Set<Product> productSearchList = prodRepo.findDistinctByNameContaining(request.getSearchName());
+
+        Set<Manufacturer> manufacturerSet = productSearchList.stream().map(m -> m.getManufacturer()).collect(Collectors.toSet());
+//        manufacturerSet.forEach(System.out::println);
+        ProductSearchDto sendList = new ProductSearchDto(productSearchList, manufacturerSet);
+        String sendContainer = mapper.writeValueAsString(sendList);
+        System.out.println("===sendContainer===");
+        System.out.println(sendContainer);
+
+        String result = mapper.writeValueAsString(productSearchList);
+//        System.out.println(sendList.toString());
+        return sendContainer;
+//        return result;
+    }
+
+    public Object getProdBySearchNameAndManId(HtRequest request) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.findAndRegisterModules();
+
+        Manufacturer man = manRepo.findById(request.getManId()).get();
+        Set<Product> prodSearchSet= prodRepo.findDistinctByNameContainingAndManufacturerOrderByPriceDesc(request.getSearchName(),man);
+        System.out.println("==== prodSearchSet ====");
+        System.out.println(prodSearchSet);
+        return mapper.writeValueAsString(prodSearchSet);
     }
 
     @Override

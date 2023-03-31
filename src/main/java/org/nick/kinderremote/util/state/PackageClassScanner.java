@@ -19,6 +19,7 @@ public class PackageClassScanner {
 
 
     public static List< Class<?> > find(String scannedPackage) {
+
         String scannedPath = scannedPackage.replace(PKG_SEPARATOR, DIR_SEPARATOR);
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
