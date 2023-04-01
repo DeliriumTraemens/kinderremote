@@ -31,6 +31,9 @@ public class PackageClassMapBuilder {
         List<Class<?>> classes = packageScanner.find(SCANNED_PAKAGE);
 
         for (Class<?> aClass : classes) {
+            String simpleName = aClass.getSimpleName();
+            System.out.println("+++++++====SimpleNameTest=======++++++++++");
+            System.out.println(simpleName);
             String name = aClass.getName().replace(SCANNED_PAKAGE+".", "");
             System.out.println("Map name=================>> " + name);
 //            String name2=name.replace("Service","Serv");

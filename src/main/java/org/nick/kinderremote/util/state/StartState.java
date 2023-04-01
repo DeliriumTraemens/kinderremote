@@ -3,7 +3,9 @@ package org.nick.kinderremote.util.state;
 import java.util.Arrays;
 import java.util.List;
 
+//Just for training purpose -- garbage
 public class StartState {
+
     public static String initString = "State String Odnako!!!";
     public static List<String> staticList = Arrays.asList("First", "Second", "Third");
     public StartState() {
