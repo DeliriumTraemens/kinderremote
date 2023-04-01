@@ -12,8 +12,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.nick.kinderremote.util.state.PackageClassMapBuilder.serviceClassNameMap;
-
 @Service
 public class MainService {
 
@@ -40,21 +38,40 @@ public class MainService {
      * Сформировать и вернуть строковый Джейсонированный Респонс
      */
     public Object dispatcher(HtRequest request) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
+//      TODO: axios methods in Front must be reformatted to avoid lowercasing of serviceName in request
+        String serviceName3 = request.getServiceName();
+        serviceName3=serviceName3.substring(0, 1).toLowerCase()+serviceName3.substring(1);
 
-        Object bean = context.getBean(servClassName);
+        Object newBean = context.getBean(serviceName3);
 
-        Method[] declaredMethods = servClassName.getDeclaredMethods();
+        Class<?> serviceClassFromContext = newBean.getClass();
+
+        Method method = serviceClassFromContext.getMethod(request.getMethodName(), HtRequest.class);
+
+        return method.invoke(newBean, request).toString();
+//        return result;
+
+//=============Old Code Section below
+
+//        Class<?> servClassName = serviceClassNameMap.get(request.getServiceName());
+//        System.out.println("========ServClassName==========");
+//        System.out.println(servClassName.getName());
+//        Object bean = context.getBean(servClassName);
+//
+//        Method[] declaredMethods = servClassName.getDeclaredMethods();
+//
+//
+//        for (Method declaredMethod : declaredMethods) {
+//            methodsMap.put(declaredMethod.getName(), declaredMethod);
+//        }
+//
+//        Method requestedMethod = methodsMap.get(request.getMethodName());
+//        Object invoke = requestedMethod.invoke(bean, request);
+
+//        return invoke.toString();
 
 
-        for (Method declaredMethod : declaredMethods) {
-            methodsMap.put(declaredMethod.getName(), declaredMethod);
-        }
 
-        Method requestedMethod = methodsMap.get(request.getMethodName());
-        Object invoke = requestedMethod.invoke(bean, request);
-
-        return invoke.toString();
     }
 
     public String dispatcher2(HtRequest request) throws InvocationTargetException, IllegalAccessException {
