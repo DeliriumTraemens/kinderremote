@@ -26,7 +26,7 @@ public class CatalogUtil {
 
 //        ObjectMapper mapper = new ObjectMapper();
 //        String s = mapper.writeValueAsString(catalog);
-        System.out.println(catalog);
+//        System.out.println(catalog);
 //        String catalogString = "written Catalog";
         oos.writeObject(stringCatalog);
         oos.close();

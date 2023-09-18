@@ -56,6 +56,11 @@ public class Product {
     @JoinColumn(name="manufacturer_id")
     private Manufacturer manufacturer;
 
+    //ImageSet
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "product_id")
+//    private Set<ProductImage> images=new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

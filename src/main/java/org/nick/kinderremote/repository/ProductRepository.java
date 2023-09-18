@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -74,5 +75,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Set<Product> findDistinctByNameContainingAndManufacturerOrderByPriceDesc(String searchName, Manufacturer man);
 
-    //    List<Product> findById(List<Long> productsIdSearchList);
+    @Query(value="SELECT p.name FROM Product p WHERE p.id = :id" ,nativeQuery=true)
+    Optional<Product> findById(@Param("id")Long id);
+//        List<Product> findById(List<Long> productsIdSearchList);
 }
