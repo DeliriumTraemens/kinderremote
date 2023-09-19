@@ -4,16 +4,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "oc_product")
-@ToString(of = {"id", "name", "creationDate","manufacturer"})
+//@ToString(of = {"id", "name", "creationDate","manufacturer"})
 //@EqualsAndHashCode(of = {"id","name"})
 
 @SecondaryTables({
@@ -57,9 +58,9 @@ public class Product {
     private Manufacturer manufacturer;
 
     //ImageSet
-//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "product_id")
-//    private Set<ProductImage> images=new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private Set<ProductImage> images=new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -77,12 +78,19 @@ public class Product {
         return Objects.hash(getId(), getPrice(), getName(), getManufacturer());
     }
 
-    //    @Override
-//    public String toString() {
-//        return "\nProduct{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", catId=" + catId +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", price=" + price +
+                ", image='" + image + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", creationDate=" + creationDate +
+                ", modificationDate=" + modificationDate +
+                ", catId=" + catId +
+                ", \n\tmanufacturer=" + manufacturer +
+                ", \n\timages=" + images +
+                '}';
+    }
 }

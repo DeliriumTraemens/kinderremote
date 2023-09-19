@@ -51,8 +51,9 @@ public class ProdService extends ServiceAbstract implements RepoService {
     public String getById(HtRequest request) {
         return "Prod Service By Id";
     }
-    public Product findById(Long id) {
-        return prodRepo.findById(id).get();
+    public Product findProductById(Long id) {
+
+        return prodRepo.findProductById(id).get();
     }
 
     public String getByCategoryId(HtRequest request) {
