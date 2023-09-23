@@ -2,6 +2,8 @@ package org.nick.kinderremote.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.hibernate.Hibernate;
 import org.nick.kinderremote.data.dto.HtRequest;
 import org.nick.kinderremote.data.dto.ManufacturerCardDto;
@@ -38,6 +40,8 @@ public class ProdService extends ServiceAbstract implements RepoService {
         this.prodRepo = prodRepo;
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     }
 
     ////--METHODS--///
@@ -51,9 +55,10 @@ public class ProdService extends ServiceAbstract implements RepoService {
     public String getById(HtRequest request) {
         return "Prod Service By Id";
     }
-    public Product findProductById(Long id) {
 
-        return prodRepo.findProductById(id).get();
+    public Product findProductById(HtRequest request) {
+
+        return prodRepo.findProductById(request.getProdId()).get();
     }
 
     public String getByCategoryId(HtRequest request) {

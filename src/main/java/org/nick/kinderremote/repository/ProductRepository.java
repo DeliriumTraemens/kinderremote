@@ -75,10 +75,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Set<Product> findDistinctByNameContainingAndManufacturerOrderByPriceDesc(String searchName, Manufacturer man);
 
-    @Query(value="SELECT p.name FROM Product p WHERE p.id = :id" ,nativeQuery=true)
-    Optional<Product> findById(@Param("id")Long id);
+//    @Query(value="SELECT * FROM oc_product  WHERE product_id = :id" ,nativeQuery=true)
+//    Optional<Product> findById(@Param("id")Long id);
 
     @Query(value="SELECT p from Product p WHERE p.id=:id")
     Optional<Product> findProductById(@Param("id")Long id);
+
+//    Optional<Product> findById(Long l);
 //        List<Product> findById(List<Long> productsIdSearchList);
 }

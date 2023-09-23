@@ -1,13 +1,12 @@
 package org.nick.kinderremote.data.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@EqualsAndHashCode(of = {"id","name"})
+//@EqualsAndHashCode(of = {"id","name"})
 @Table(name = "oc_product_image")
 public class ProductImage {
     @Id
