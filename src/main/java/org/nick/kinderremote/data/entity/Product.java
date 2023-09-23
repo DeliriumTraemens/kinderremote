@@ -62,6 +62,13 @@ public class Product {
     @JoinColumn(name = "product_id")
     private Set<ProductImage> images=new HashSet<>();
 
+    //Attribute
+//    @ManyToMany
+//    @JoinTable(name = "oc_product_attribute",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
+//    private List<Attribute> attributes;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
