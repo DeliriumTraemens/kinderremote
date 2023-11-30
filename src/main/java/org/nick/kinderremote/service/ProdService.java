@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.hibernate.Hibernate;
-import org.nick.kinderremote.data.dto.HtRequest;
-import org.nick.kinderremote.data.dto.ManufacturerCardDto;
-import org.nick.kinderremote.data.dto.ProductByIdWithManufacturerList;
-import org.nick.kinderremote.data.dto.ProductSearchDto;
+import org.nick.kinderremote.data.dto.*;
 import org.nick.kinderremote.data.entity.Manufacturer;
 import org.nick.kinderremote.data.entity.Product;
+import org.nick.kinderremote.data.entity.ProductAttributeMain;
+import org.nick.kinderremote.data.entity.ProductImage;
 import org.nick.kinderremote.data.projections.ManProjIf;
 import org.nick.kinderremote.data.projections.ProdCardManIf;
 import org.nick.kinderremote.data.projections.ProdCardProjIf;
@@ -34,10 +33,13 @@ public class ProdService extends ServiceAbstract implements RepoService {
     ObjectMapper mapper;
     private final ManufacturerRepository manRepo;
     private final ProductRepository prodRepo;
+
+    private final ProductAttributeService pas;
     @Autowired
-    public ProdService(ManufacturerRepository manRepo, ProductRepository prodRepo) {
+    public ProdService(ManufacturerRepository manRepo, ProductRepository prodRepo, ProductAttributeService pas) {
         this.manRepo = manRepo;
         this.prodRepo = prodRepo;
+        this.pas = pas;
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -56,9 +58,51 @@ public class ProdService extends ServiceAbstract implements RepoService {
         return "Prod Service By Id";
     }
 
-    public Product findProductById(HtRequest request) {
+//    public Product findProductById(HtRequest request) {
+//    public ProductDetailsDto findProductById(HtRequest request) {
+    public String findProductById(HtRequest request) throws JsonProcessingException {
+        Long prodId = request.getProdId();
+        Product productById = prodRepo.findProductById(prodId).get();
 
-        return prodRepo.findProductById(request.getProdId()).get();
+        ProductImage imageToAdd = new ProductImage();
+        imageToAdd.setId(0L);
+        imageToAdd.setImage(productById.getImage());
+        Set<ProductImage> images = productById.getImages();
+        images.add(imageToAdd);
+        productById.setImages(images);
+
+
+        List<ProductAttributeMain> paById = pas.findPAById(prodId);
+//        Attrib converted
+        Object attribDto = pas.convertToDto(paById);
+
+        ProductDetailsDto productDetailsDto = generateProductDto(productById, attribDto);
+
+        System.out.println("=========productDetailsDto=========");
+        System.out.println(productDetailsDto);
+//        return prodRepo.findProductById(request.getProdId()).get();
+//        return mapper.writeValueAsString(productDetailsDto);
+        Gson gson = new Gson();
+        String res = gson.toJson(productDetailsDto);
+//        return mapper.writeValueAsString(productDetailsDto);
+        return res;
+    }
+
+    public ProductDetailsDto generateProductDto(Product productById, Object attribDto) {
+        ProductDetailsDto productFinalDto=new ProductDetailsDto();
+        productFinalDto.setId(productById.getId());
+        productFinalDto.setPrice(productById.getPrice());
+        productFinalDto.setImage(productById.getImage());
+        productFinalDto.setName(productById.getName());
+        productFinalDto.setDescription(productById.getDescription());
+        productFinalDto.setCreationDate(productById.getCreationDate());
+        productFinalDto.setModificationDate(productById.getModificationDate());
+        productFinalDto.setCatId(productById.getCatId());
+        productFinalDto.setManufacturer(productById.getManufacturer());
+        //ImageSet
+        productFinalDto.setImages(productById.getImages());
+        productFinalDto.setGroupAttribute(attribDto);
+    return productFinalDto;
     }
 
     public String getByCategoryId(HtRequest request) {

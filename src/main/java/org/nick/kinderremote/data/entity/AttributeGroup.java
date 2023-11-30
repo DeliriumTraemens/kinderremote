@@ -3,7 +3,6 @@ package org.nick.kinderremote.data.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -21,7 +20,15 @@ public class AttributeGroup {
 
     // Другие поля сущности AttributeGroup
 
-    @OneToMany(mappedBy = "attributeGroup", cascade = CascadeType.ALL)
-    private List<Attribute> attributes;
+//    @OneToMany(fetch = FetchType.EAGER,mappedBy = "attributeGroup", cascade = CascadeType.ALL)
+//    private List<ProductAttribute> attributes;
 
+//    @Override
+//    public String toString() {
+//        return "AttributeGroup{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", attributes=" + attributes +
+//                '}';
+//    }
 }

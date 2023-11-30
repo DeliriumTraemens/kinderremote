@@ -22,3 +22,4 @@ public class Attribute {
     @JoinColumn(name = "attribute_group_id")
     private AttributeGroup attributeGroup;
 }
+

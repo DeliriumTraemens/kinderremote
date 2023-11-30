@@ -7,9 +7,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -63,11 +61,32 @@ public class Product {
     private Set<ProductImage> images=new HashSet<>();
 
     //Attribute
-//    @ManyToMany
+//    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "oc_product_attribute",
 //            joinColumns = @JoinColumn(name = "product_id"),
 //            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
 //    private List<Attribute> attributes;
+
+//    Temp Disabled
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "product_id")
+//    private Set<ProductAttributeMain>attributes;
+
+    //Elly Section===========================================
+//    @Transient
+//    private Map<String, String> attributeMap;
+//
+//
+//    @PostLoad
+//    private void fillAttributeMap() {
+//        attributeMap = new HashMap<>();
+//        for (Attribute attribute : attributes) {
+//            String attributeName = attribute.getName();
+//            String attributeText = ""; // получите значение из таблицы 'oc_product_attribute'
+//            attributeMap.put(attributeName, attributeText);
+//        }
+//    }
+    //===========================================
 
     @Override
     public boolean equals(Object o) {
@@ -100,4 +119,21 @@ public class Product {
                 ", \n\timages=" + images +
                 '}';
     }
+
+//    @Override
+//    public String toString() {
+//        return "Product{" +
+//                "id=" + id +
+//                ", \nprice=" + price +
+//                ", \nimage='" + image + '\'' +
+//                ", \nname='" + name + '\'' +
+//                ", \ndescription='" + description + '\'' +
+//                ", \ncreationDate=" + creationDate +
+//                ", modificationDate=" + modificationDate +
+//                ", \ncatId=" + catId +
+//                ", \nmanufacturer=" + manufacturer +
+//                ", \nimages=" + images +
+//                ", \nattributes=" + attributes +
+//                '}';
+//    }
 }
