@@ -60,33 +60,7 @@ public class Product {
     @JoinColumn(name = "product_id")
     private Set<ProductImage> images=new HashSet<>();
 
-    //Attribute
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "oc_product_attribute",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "attribute_id"))
-//    private List<Attribute> attributes;
 
-//    Temp Disabled
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "product_id")
-//    private Set<ProductAttributeMain>attributes;
-
-    //Elly Section===========================================
-//    @Transient
-//    private Map<String, String> attributeMap;
-//
-//
-//    @PostLoad
-//    private void fillAttributeMap() {
-//        attributeMap = new HashMap<>();
-//        for (Attribute attribute : attributes) {
-//            String attributeName = attribute.getName();
-//            String attributeText = ""; // получите значение из таблицы 'oc_product_attribute'
-//            attributeMap.put(attributeName, attributeText);
-//        }
-//    }
-    //===========================================
 
     @Override
     public boolean equals(Object o) {
