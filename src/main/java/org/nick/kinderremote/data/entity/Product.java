@@ -50,6 +50,45 @@ public class Product {
     @Column(name = "category_id", table = "oc_product_to_category")
     private Long catId;
 
+    // artikules, amount and so on
+    @Column(name="model")
+    private String model;
+
+    @Column(name = "sku")
+    private String sku;
+
+    @Column(name="upc")
+    private String upc;
+
+    @Column(name="isbn")
+    private String isbn;
+
+    @Column(name ="quantity")
+    private int quantity;
+
+    @Column(name="stock_status_id")
+    private int stockStatus;
+
+    @Column(name ="points")
+    private int points;
+
+    @Column(name="weight")
+    private float weight;
+
+    @Column(name="length")
+    private Float length;
+
+    @Column(name="width")
+    private Float width;
+
+    @Column(name="height")
+    private Float height;
+
+    @Column(name="status")
+    private Float status;
+
+
+//^
     @ManyToOne
     @JsonManagedReference
     @JoinColumn(name="manufacturer_id")
@@ -89,25 +128,23 @@ public class Product {
                 ", creationDate=" + creationDate +
                 ", modificationDate=" + modificationDate +
                 ", catId=" + catId +
-                ", \n\tmanufacturer=" + manufacturer +
-                ", \n\timages=" + images +
+                ", model='" + model + '\'' +
+                ", sku='" + sku + '\'' +
+                ", upc='" + upc + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", quantity=" + quantity +
+                ", stockStatus=" + stockStatus +
+                ", points=" + points +
+                ", weight=" + weight +
+                ", length=" + length +
+                ", width=" + width +
+                ", height=" + height +
+                ", status=" + status +
+                ", manufacturer=" + manufacturer +
+                ", images=" + images +
                 '}';
     }
 
-//    @Override
-//    public String toString() {
-//        return "Product{" +
-//                "id=" + id +
-//                ", \nprice=" + price +
-//                ", \nimage='" + image + '\'' +
-//                ", \nname='" + name + '\'' +
-//                ", \ndescription='" + description + '\'' +
-//                ", \ncreationDate=" + creationDate +
-//                ", modificationDate=" + modificationDate +
-//                ", \ncatId=" + catId +
-//                ", \nmanufacturer=" + manufacturer +
-//                ", \nimages=" + images +
-//                ", \nattributes=" + attributes +
-//                '}';
-//    }
+
+//
 }

@@ -64,6 +64,9 @@ public class ProdService extends ServiceAbstract implements RepoService {
         Long prodId = request.getProdId();
         Product productById = prodRepo.findProductById(prodId).get();
 
+        System.out.println("==============");
+        System.out.println(productById);
+
         ProductImage imageToAdd = new ProductImage();
         imageToAdd.setId(0L);
         imageToAdd.setImage(productById.getImage());
@@ -99,6 +102,7 @@ public class ProdService extends ServiceAbstract implements RepoService {
         productFinalDto.setModificationDate(productById.getModificationDate());
         productFinalDto.setCatId(productById.getCatId());
         productFinalDto.setManufacturer(productById.getManufacturer());
+
         //ImageSet
         productFinalDto.setImages(productById.getImages());
         productFinalDto.setGroupAttribute(attribDto);

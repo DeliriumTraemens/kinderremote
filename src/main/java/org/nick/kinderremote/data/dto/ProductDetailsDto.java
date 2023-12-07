@@ -24,6 +24,32 @@ public class ProductDetailsDto {
 
     private LocalDateTime modificationDate;
 
+    //
+    private String model;
+
+    private String sku;
+
+    private String upc;
+
+    private String isbn;
+
+    private int quantity;
+
+    private int stockStatus;
+
+    private int points;
+
+    private float weight;
+
+    private Float length;
+
+    private Float width;
+
+    private Float height;
+
+    private Float status;
+    //
+
     private Long catId;
 
     private Manufacturer manufacturer;
