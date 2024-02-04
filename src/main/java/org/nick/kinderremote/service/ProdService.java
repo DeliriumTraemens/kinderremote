@@ -64,8 +64,8 @@ public class ProdService extends ServiceAbstract implements RepoService {
         Long prodId = request.getProdId();
         Product productById = prodRepo.findProductById(prodId).get();
 
-        System.out.println("==============");
-        System.out.println(productById);
+//        System.out.println("==============");
+//        System.out.println(productById);
 
         ProductImage imageToAdd = new ProductImage();
         imageToAdd.setId(0L);
@@ -81,8 +81,8 @@ public class ProdService extends ServiceAbstract implements RepoService {
 
         ProductDetailsDto productDetailsDto = generateProductDto(productById, attribDto);
 
-        System.out.println("=========productDetailsDto=========");
-        System.out.println(productDetailsDto);
+//        System.out.println("=========productDetailsDto=========");
+//        System.out.println(productDetailsDto);
 //        return prodRepo.findProductById(request.getProdId()).get();
 //        return mapper.writeValueAsString(productDetailsDto);
         Gson gson = new Gson();
@@ -102,6 +102,30 @@ public class ProdService extends ServiceAbstract implements RepoService {
         productFinalDto.setModificationDate(productById.getModificationDate());
         productFinalDto.setCatId(productById.getCatId());
         productFinalDto.setManufacturer(productById.getManufacturer());
+
+        productFinalDto.setModel(productById.getModel());
+
+        productFinalDto.setSku(productById.getSku());
+
+        productFinalDto.setUpc(productById.getUpc());
+
+        productFinalDto.setIsbn(productById.getIsbn());
+
+        productFinalDto.setQuantity(productById.getQuantity());
+
+        productFinalDto.setStockStatus(productById.getStockStatus());
+
+        productFinalDto.setPoints(productById.getPoints());
+
+        productFinalDto.setWeight(productById.getWeight());
+
+        productFinalDto.setLength(productById.getLength());
+
+        productFinalDto.setWidth(productById.getWidth());
+
+        productFinalDto.setHeight(productById.getHeight());
+
+        productFinalDto.setStatus(productById.getStatus());
 
         //ImageSet
         productFinalDto.setImages(productById.getImages());

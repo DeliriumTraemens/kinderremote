@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -26,7 +28,7 @@ public class MainController {
     MainService ms;
 
     @GetMapping
-    public Object mainEndPoint(HtRequest request, HttpServletResponse response) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public Object mainEndPoint(HtRequest request, HttpServletRequest servletRequest, HttpServletResponse response, HttpSession session) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Cookie cookie = new Cookie("username", "Johannnan");
         Cookie cookie1 = new Cookie("username1", "Grigorich");
 
@@ -34,8 +36,15 @@ public class MainController {
         response.addCookie(cookie1);
 
         logger.info("mainEndPoint Requested");
+        System.out.println("==============SESSION===========");
+        System.out.println(session.getId());
+        System.out.println(session.getLastAccessedTime());
 
+        servletRequest.getRemoteAddr();
 
+        System.out.println("=========request=========");
+        System.out.println("request session id is " + servletRequest.getSession().getId());
+        System.out.println("Address is " + servletRequest.getRemoteAddr());
         return ms.dispatcher(request);
     }
 
