@@ -7,7 +7,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,6 +26,11 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
+    // WISHLIST
+//    @ManyToMany(mappedBy = "wishlist")
+//    private Set<Customer> customers;
+//
+
     @Column(name = "price")
     private Float price;
 
@@ -39,72 +46,75 @@ public class Product {
 
     @JsonIgnore
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name ="date_added")
+    @Column(name = "date_added")
     private LocalDateTime creationDate;
 
     @JsonIgnore
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name ="date_modified")
+    @Column(name = "date_modified")
     private LocalDateTime modificationDate;
 
     @Column(name = "category_id", table = "oc_product_to_category")
     private Long catId;
 
     // artikules, amount and so on
-    @Column(name="model")
+    @Column(name = "model")
     private String model;
 
     @Column(name = "sku")
     private String sku;
 
-    @Column(name="upc")
+    @Column(name = "upc")
     private String upc;
 
-    @Column(name="isbn")
+    @Column(name = "isbn")
     private String isbn;
 
-    @Column(name ="quantity")
+    @Column(name = "quantity")
     private int quantity;
 
-    @Column(name="stock_status_id")
+    @Column(name = "stock_status_id")
     private int stockStatus;
 
-    @Column(name ="points")
+    @Column(name = "points")
     private int points;
 
-    @Column(name="weight")
+    @Column(name = "weight")
     private float weight;
 
-    @Column(name="length")
+    @Column(name = "length")
     private Float length;
 
-    @Column(name="width")
+    @Column(name = "width")
     private Float width;
 
-    @Column(name="height")
+    @Column(name = "height")
     private Float height;
 
-    @Column(name="status")
+    @Column(name = "status")
     private Float status;
 
 
-//^
+    //^
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name="manufacturer_id")
+    @JoinColumn(name = "manufacturer_id")
     private Manufacturer manufacturer;
 
     //ImageSet
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private Set<ProductImage> images=new HashSet<>();
-
+    private Set<ProductImage> images = new HashSet<>();
 
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Product)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Product)) {
+            return false;
+        }
         Product product = (Product) o;
         return getId().equals(product.getId()) &&
                 Objects.equals(getPrice(), product.getPrice()) &&
