@@ -14,8 +14,10 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long SessionId;
+
     @Column(name="uuid")
     private String uuid;
+
 
     @JsonIgnore
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
