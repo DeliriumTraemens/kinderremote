@@ -38,9 +38,9 @@ public class Customer {
     @Column(name = "salt")
     private String salt;
 
-    @Column(name = "cart")
-    @OneToMany(mappedBy="customer")
-    private List <Cart> cart;
+//    @Column(name = "cart")
+//    @OneToMany(mappedBy="customer")
+//    private List <Cart> cart;
 
 //    @Column(name = "wishlist")
 ////    @OneToMany

@@ -12,10 +12,10 @@ public class Cart {
     @Column(name = "cart_id")
     private Long cartId;
 
-    @Column(name="customer_id")
-    @ManyToOne
-    @JoinColumn(name="customer_id")
-    private Customer customer;
+//    @Column(name="customer_id")
+//    @ManyToOne
+//    @JoinColumn(name="customer_id")
+//    private Customer customer;
 
     @Column(name ="session_id")
     private Long sessionId;

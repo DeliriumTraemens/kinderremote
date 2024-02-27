@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,22 +28,22 @@ public class MainController {
 
     @GetMapping
     public Object mainEndPoint(HtRequest request, HttpServletRequest servletRequest, HttpServletResponse response, HttpSession session) throws JsonProcessingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Cookie cookie = new Cookie("username", "Johannnan");
-        Cookie cookie1 = new Cookie("username1", "Grigorich");
-
-        response.addCookie(cookie);
-        response.addCookie(cookie1);
-
-        logger.info("mainEndPoint Requested");
-        System.out.println("==============SESSION===========");
-        System.out.println(session.getId());
-        System.out.println(session.getLastAccessedTime());
-
-        servletRequest.getRemoteAddr();
-
-        System.out.println("=========request=========");
-        System.out.println("request session id is " + servletRequest.getSession().getId());
-        System.out.println("Address is " + servletRequest.getRemoteAddr());
+//        Cookie cookie = new Cookie("username", "Johannnan");
+//        Cookie cookie1 = new Cookie("username1", "Grigorich");
+//
+//        response.addCookie(cookie);
+//        response.addCookie(cookie1);
+//
+//        logger.info("mainEndPoint Requested");
+//        System.out.println("==============SESSION===========");
+//        System.out.println(session.getId());
+//        System.out.println(session.getLastAccessedTime());
+//
+//        servletRequest.getRemoteAddr();
+//
+//        System.out.println("=========request=========");
+//        System.out.println("request session id is " + servletRequest.getSession().getId());
+//        System.out.println("Address is " + servletRequest.getRemoteAddr());
         return ms.dispatcher(request);
     }
 
