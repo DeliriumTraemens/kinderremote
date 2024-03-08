@@ -23,4 +23,12 @@ public class Session {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "date_added")
     private LocalDateTime creationDate;
+
+    @Column(name ="visited")
+    private boolean visited=false;
+
+//    @Column(name ="customer_id")
+//    private Long customerId;
+    @ManyToOne
+    private Customer customer;
 }

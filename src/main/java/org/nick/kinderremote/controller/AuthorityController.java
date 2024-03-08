@@ -1,6 +1,9 @@
 package org.nick.kinderremote.controller;
 
-import org.nick.kinderremote.data.entity.authorithy.Session;
+import org.nick.kinderremote.service.AuthenticationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,9 @@ import java.util.Map;
 @CrossOrigin("*")
 @RequestMapping(path="/authority", produces = "application/json")
 public class AuthorityController {
+    private final Logger logger = LoggerFactory.getLogger(MainController.class);
+    @Autowired
+    AuthenticationService authService;
 
     @PostMapping("/noname")
     public String authority(@RequestParam("localSessionId") String sessionId, HttpServletRequest request){
@@ -21,11 +27,10 @@ public class AuthorityController {
 
         printRequestDetails(request);
 
-        Session newSession=new Session();
-        newSession.setUuid(sessionId);
 
+        String authorityToSend=authService.processAuthorisation(sessionId,request);
 
-        return "null Processed";
+        return authorityToSend;
     }
 
     public void printRequestDetails(HttpServletRequest request) {

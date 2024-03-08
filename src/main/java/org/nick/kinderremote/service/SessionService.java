@@ -22,6 +22,7 @@ private final SessionRepository sesRepo;
         Session forCreate = new Session();
         forCreate.setUuid(uuid);
         forCreate.setCreationDate(LocalDateTime.now());
+        forCreate.setVisited(true);
 
         return sesRepo.save(forCreate);
     }

@@ -5,6 +5,7 @@ import org.nick.kinderremote.data.entity.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ public class Customer {
 
     @Id
     @Column(name = "customer_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long customerId;
 
 
@@ -75,13 +77,22 @@ public class Customer {
     private String code;
 
     @Column(name = "date_added")
-    private java.sql.Timestamp dateAdded;
+    private LocalDateTime dateAdded;
+
+//    @ElementCollection
+//    @CollectionTable(name="oc_session_ids")
+//    @CollectionId(
+//            columns = @Column(name="id"),
+//            type = @Type(type="long"),
+//            generator = "sequence"
+//    )
+//    private List<Long> sessions;
 
     @OneToMany
-    private List<Session>sessions;
+    private List<Session>sessions = new ArrayList<>();
 
     @OneToMany
-    private List<Product>viewed;
+    private List<Product> viewed;
     private CustomerGroup customerGroup;
 
     @OneToOne
