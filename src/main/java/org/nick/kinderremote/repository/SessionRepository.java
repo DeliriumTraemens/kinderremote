@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 public interface SessionRepository extends JpaRepository<Session, Long> {
 
     Session findByUuid(String uuid);
+
+    Session readByUuid(String sessionId);
+
+//    void getByUuid(String sessionId);
+//    Optional getByUuid(String uuid);
 }

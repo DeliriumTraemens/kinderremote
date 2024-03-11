@@ -1,7 +1,9 @@
 package org.nick.kinderremote.data.entity.authorithy;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
-import org.nick.kinderremote.data.entity.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,9 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "oc_customernew")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "customerId")
 public class Customer {
 
     @Id
@@ -88,17 +93,42 @@ public class Customer {
 //    )
 //    private List<Long> sessions;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
+    @JsonManagedReference
     private List<Session>sessions = new ArrayList<>();
 
-    @OneToMany
-    private List<Product> viewed;
-    private CustomerGroup customerGroup;
+//    @OneToMany
+//    private List<Product> viewed;
+//    private CustomerGroup customerGroup;
+//
+//    @OneToOne
+//    private CustomerAddress address;
+//
+//    private LocalDateTime created;
+//    private CustomerStatus customerStatus;
 
-    @OneToOne
-    private CustomerAddress address;
 
-    private LocalDateTime created;
-    private CustomerStatus customerStatus;
-
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId=" + customerId +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", fax='" + fax + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", addressId=" + addressId +
+                ", customField='" + customField + '\'' +
+                ", ip='" + ip + '\'' +
+                ", status=" + status +
+                ", approved=" + approved +
+                ", safe=" + safe +
+                ", token='" + token + '\'' +
+                ", code='" + code + '\'' +
+                ", dateAdded=" + dateAdded +
+                ", sessions=" + sessions +
+                '}';
+    }
 }

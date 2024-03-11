@@ -14,7 +14,8 @@ private final SessionRepository sesRepo;
         this.sesRepo = sesRepo;
     }
 
-    public Session findByUuid(String uuid){
+    public Session getByUuid(String uuid){
+        System.out.println("SessionService.getByUuid\n"+sesRepo.findByUuid(uuid));
         return sesRepo.findByUuid(uuid);
     }
 
@@ -28,10 +29,12 @@ private final SessionRepository sesRepo;
     }
 
     public Boolean chekIsExistedSession(String uuid){
-        Session forChek =  findByUuid(uuid);
+        Session forChek =  getByUuid(uuid);
         if(forChek == null){
+            System.out.println("===============FORCHECK=============== "+forChek);
             return false;
         }
+            System.out.println("===============FORCHECK=============== "+forChek);
         return true;
     }
 }

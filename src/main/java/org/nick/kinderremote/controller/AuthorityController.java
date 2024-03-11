@@ -21,15 +21,17 @@ public class AuthorityController {
 
     @PostMapping("/noname")
     public String authority(@RequestParam("localSessionId") String sessionId, HttpServletRequest request){
-        printSessionId(sessionId, request);
-
-        printParametersMap(request);
-
-        printRequestDetails(request);
+//        printSessionId(sessionId, request);
+//
+//        printParametersMap(request);
+//
+//        printRequestDetails(request);
 
 
         String authorityToSend=authService.processAuthorisation(sessionId,request);
-
+//        String authorityToSend=authService.processing(sessionId,request);
+//        System.out.println("\n========RESPONCE=============");
+//        System.out.println(authorityToSend);
         return authorityToSend;
     }
 
